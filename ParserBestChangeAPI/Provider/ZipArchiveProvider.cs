@@ -56,19 +56,23 @@ namespace ParserBestChangeAPI.Provider
 
         public async Task<Dictionary<string, string>> GetCurrencys (string FileName)
         {
-           
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             ZipArchiveEntry entry = archive.GetEntry(FileName);
-            using (StreamReader reader = new StreamReader(entry.Open()))
+            using (StreamReader reader = new StreamReader(entry.Open(),Encoding.GetEncoding(1251)))
             {
                 var dictionary = new Dictionary<string, string>();
-
+               
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
                     string[] splitData = line.Split(";");
-                    byte[] bytes = Encoding.Default.GetBytes(splitData[2]);
+
                     
-                    dictionary.Add(splitData[0], Encoding.UTF8.GetString(bytes));
+
+
+
+                    dictionary.Add(splitData[0], splitData[2]);
                     
 
                 }
