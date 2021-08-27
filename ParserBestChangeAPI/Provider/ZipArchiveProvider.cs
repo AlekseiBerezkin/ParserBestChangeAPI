@@ -67,7 +67,7 @@ namespace ParserBestChangeAPI.Provider
             using (ZipArchive archive = ZipFile.Open(_fileName, ZipArchiveMode.Read))
             {
                 ZipArchiveEntry entry = archive.GetEntry(FileName);
-
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                 using (StreamReader reader = new StreamReader(entry.Open(),Encoding.GetEncoding(1251)))
                 {
                     var dictionary = new Dictionary<string, string>();
