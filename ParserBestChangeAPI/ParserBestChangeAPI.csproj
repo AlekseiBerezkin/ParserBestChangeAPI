@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="info.zip" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Controllers\NewFolder\" />
   </ItemGroup>
 

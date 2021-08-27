@@ -12,73 +12,81 @@ namespace ParserBestChangeAPI.Provider
 {
     public class ZipArchiveProvider : IDisposable
     {
-        ZipArchive archive;
+        //ZipArchive archive;
+        string _fileName;
        public ZipArchiveProvider(string fileName)
         {
-                archive = ZipFile.Open(fileName, ZipArchiveMode.Read);
+            _fileName = fileName;
+            //ZipArchive archive = ZipFile.Open(fileName, ZipArchiveMode.Read);
+            
         }
 
         public async Task<Dictionary<string, List<double>>> GetMassData(string FileName)
         {
-            
-            ZipArchiveEntry entry = archive.GetEntry(FileName);
-            using (StreamReader reader = new StreamReader(entry.Open()))
-            {
-                Rates objrates=new Rates();
-                // List<Rates> ratesList = new List<Rates>();
-                var dictionary = new Dictionary<string, List<double>>();
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    string[] splitData = line.Split(";");
 
-                    if (!dictionary.ContainsKey(splitData[0] + "-" + splitData[1]))
+            using (ZipArchive archive = ZipFile.Open(_fileName, ZipArchiveMode.Read))
+            {
+                ZipArchiveEntry entry = archive.GetEntry(FileName);
+                using (StreamReader reader = new StreamReader(entry.Open()))
+                {
+                    Rates objrates = new Rates();
+                    // List<Rates> ratesList = new List<Rates>();
+                    var dictionary = new Dictionary<string, List<double>>();
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        //add
-                        List<double> lr = new List<double>();
-                        lr.Add( Math.Max(double.Parse(splitData[3], CultureInfo.InvariantCulture), double.Parse(splitData[4], CultureInfo.InvariantCulture)));
-                        dictionary.Add(splitData[0] + "-" + splitData[1], lr);
+                        string[] splitData = line.Split(";");
+
+                        if (!dictionary.ContainsKey(splitData[0] + "-" + splitData[1]))
+                        {
+                            //add
+                            List<double> lr = new List<double>();
+                            lr.Add(Math.Max(double.Parse(splitData[3], CultureInfo.InvariantCulture), double.Parse(splitData[4], CultureInfo.InvariantCulture)));
+                            dictionary.Add(splitData[0] + "-" + splitData[1], lr);
+                        }
+                        else
+                        {
+                            dictionary[splitData[0] + "-" + splitData[1]].Add(Math.Max(double.Parse(splitData[3], CultureInfo.InvariantCulture), double.Parse(splitData[4], CultureInfo.InvariantCulture)));
+                        }
+
+                        //dictionary.Add(splitData[0]+"-"+splitData[1], new Rates {ID1=splitData[0], ID2 = splitData[1], ExchangeRates1 = splitData[3], ExchangeRates2 = splitData[4] });
+                        // rates.Append(line+"\n");
                     }
-                    else
-                    {
-                        dictionary[splitData[0] + "-" + splitData[1]].Add(Math.Max(double.Parse(splitData[3], CultureInfo.InvariantCulture), double.Parse(splitData[4], CultureInfo.InvariantCulture)));
-                    }
-                    
-                    //dictionary.Add(splitData[0]+"-"+splitData[1], new Rates {ID1=splitData[0], ID2 = splitData[1], ExchangeRates1 = splitData[3], ExchangeRates2 = splitData[4] });
-                    // rates.Append(line+"\n");
+                    return dictionary;
                 }
-                return dictionary;
+
+                return null;
             }
 
-            return null;
+                
         }
 
 
         public async Task<Dictionary<string, string>> GetCurrencys (string FileName)
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            ZipArchiveEntry entry = archive.GetEntry(FileName);
-            using (StreamReader reader = new StreamReader(entry.Open(),Encoding.GetEncoding(1251)))
+            using (ZipArchive archive = ZipFile.Open(_fileName, ZipArchiveMode.Read))
             {
-                var dictionary = new Dictionary<string, string>();
-               
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                ZipArchiveEntry entry = archive.GetEntry(FileName);
+
+                using (StreamReader reader = new StreamReader(entry.Open(),Encoding.GetEncoding(1251)))
                 {
-                    string[] splitData = line.Split(";");
+                    var dictionary = new Dictionary<string, string>();
 
-                    
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] splitData = line.Split(";");
+                        byte[] bytes = Encoding.Default.GetBytes(splitData[2]);
+
+                        dictionary.Add(splitData[0], Encoding.UTF8.GetString(bytes));
 
 
-
-                    dictionary.Add(splitData[0], splitData[2]);
-                    
-
+                    }
+                    return dictionary;
                 }
-                return dictionary;
+
             }
-            
+
         }
         public void Dispose()
         {
