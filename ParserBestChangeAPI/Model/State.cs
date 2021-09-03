@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace ParserBestChangeAPI.Model
 {
-    public static class State
+    public class State
     {
-        public static List<Rates> result = new List<Rates>();
+        public static bool flagProcessUpdate = false;
 
         public static int stopTimer = 0;
 
-        public static bool flagProcessUpdate = false;
+        public static bool flagStateServer = false;
     }
 }

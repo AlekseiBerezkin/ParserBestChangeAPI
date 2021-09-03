@@ -1,211 +1,120 @@
 WMZ:wmz
 WMR:wmr
 WME:wme
-Беларусбанк:belarusbank
 Приват 24 USD:privat24-usd
 ЮMoney (Я.Деньги):yoomoney
-WU RUB:wu-rub
 Сбербанк:sberbank
 OmiseGO (OMG):omg
-WU EUR:wu-euro
-WMB:wmb
 Binance Coin (BNB):binance-coin
-Advanced Cash TRY:advanced-cash-try
-WMG:wmg
-ВТБ:vtb
-WMK:wmk
 Perfect Money USD:perfectmoney-usd
 Perfect Money EUR:perfectmoney-euro
 PayPal USD:paypal-usd
-ePayService:epayservice
 Альфа-Банк:alfaclick
-Промсвязьбанк:psbank
-Счет телефона RUB:mobile-wallet-rub
-Visa/MasterCard BYN:visa-mastercard-byr
 Приват 24 UAH:privat24-uah
 Skrill USD:skrill
 Visa/MasterCard USD:visa-mastercard-usd
 Visa/MasterCard RUB:visa-mastercard-rub
 Visa/MasterCard UAH:visa-mastercard-uah
-Тинькофф cash-in:tinkoff-cash-in
 BAT (BAT):bat
-Альфа cash-in RUB:alfabank-cash
 QIWI RUB:qiwi
-Русский Стандарт:russtandart
 Visa/MasterCard EUR:visa-mastercard-euro
-Кукуруза:kykyryza
-Kaspi Bank:kaspi-bank
-WU USD:wu
 Ощадбанк:oschadbank
 Любой банк USD:wire-usd
-PaySafeCard:paysafecard
 Любой банк EUR:wire-euro
 Любой банк RUB:wire-rub
-Neteller USD:neteller
-Paxum:paxum
-Idram:idram
-ForteBank:fortebank
-WMP:wmp
 MoneyGram EUR:moneygram-euro
 MoneyGram USD:moneygram
-Авангард:avangard
 PayPal EUR:paypal-euro
 Любой банк GBP:wire-gbp
 Solana (SOL):solana
-Visa/MasterCard TRY:visa-mastercard-try
 Монобанк:monobank
 Capitalist RUB:capitalist-rub
-UNI USD:uni
-Paymer USD:paymer
 Advanced Cash USD:advanced-cash
 Наличные USD:dollar-cash
-HalykBank:halykbank
 Наличные RUB:ruble-cash
 Наличные UAH:hryvnia-cash
 Bitcoin (BTC):bitcoin
-Наличные KZT:tenge-cash
-Газпромбанк:gazprombank
-WMX:wmx
-Epay EUR:epay-euro
 PayPal RUB:paypal-rub
 Litecoin (LTC):litecoin
-Карта UnionPay:unionpay
-Contact USD:contact-usd
 Любой банк UAH:wire-uah
 Payoneer:payoneer
-ICON (ICX):icon
-Тинькофф:tinkoff
-Contact RUB:contact
-Золотая Корона RUB:golden-crown
 Payeer USD:payeer
-NixMoney USD:nixmoney
 Binance UAH:binance-uah
 Visa/MasterCard KZT:visa-mastercard-kzt
 GlobalMoney:globalmoney
-Любой банк KZT:wire-kzt
-Сбербанк KZT:sberbank-kzt
 Dogecoin (DOGE):dogecoin
-Золотая Корона USD:golden-crown-usd
 Payeer RUB:payeer-rub
 ПУМБ:pumb
-Любой банк INR:wire-inr
 Advanced Cash EUR:advanced-cash-euro
 Advanced Cash RUB:advanced-cash-rub
 Payeer EUR:payeer-euro
 Skrill EUR:skrill-euro
 Verge (XVG):verge
-NixMoney EUR:nixmoney-euro
 Binance RUB:binance-rub
-QIWI KZT:qiwi-kzt
 Perfect Money BTC:perfectmoney-btc
 Exmo USD:exmo
 Exmo RUB:exmo-rub
 Exmo EUR:exmo-euro
-РНКБ:rnkb
 Waves (WAVES):waves
 Komodo (KMD):komodo
 Ontology (ONT):ontology
-Neteller EUR:neteller-euro
 Bitcoin SV (BSV):bitcoin-sv
 Peercoin (PPC):peercoin
 Ethereum (ETH):ethereum
 Dash (DASH):dash
 Наличные EUR:euro-cash
 Advanced Cash UAH:advanced-cash-uah
-Альфа cash-in USD:alfabank-cashin-usd
-Paymer RUB:paymer-rub
 Capitalist USD:capitalist
 Visa/MasterCard GBP:visa-mastercard-gbp
-Тинькофф QR:tinkoff-qr
-Криптобиржи USD:trade-usd
 Monero (XMR):monero
-Ria USD:ria-usd
-Ria EUR:ria-euro
-PaySera USD:paysera
-Криптобиржи EUR:trade-euro
 Epay USD:epay
-Visa/MasterCard SEK:visa-mastercard-sek
-PM e-Voucher USD:pm-voucher
 Райффайзен:raiffeisen-bank
 Райффайзен UAH:raiffeisen-bank-uah
-Счет ИП или ООО:settlement-rub
 Ether Classic (ETC):ethereum-classic
 Ripple (XRP):ripple
 Zcash (ZEC):zcash
 Tether Omni (USDT):tether
 PayPal GBP:paypal-gbp
-Alipay:alipay
-Любой банк CNY:wire-cny
-Любой банк THB:wire-thb
 0x (ZRX):zrx
 Exmo UAH:exmo-uah
-Почта Банк:post-bank
-Sepa EUR:sepa-to-zrx
-Bitcoin Cash (BCH):
-NEM (XEM):bitcoin-cash
+Sepa EUR:sepa
+Bitcoin Cash (BCH):bitcoin-cash
+NEM (XEM):nem
 Augur (REP):augur
 Tezos (XTZ):tezos
-Открытие:openbank
 NEO (NEO):neo
 EOS (EOS):eos
 IOTA (MIOTA):iota
 Lisk (LSK):lisk
 Cardano (ADA):cardano
 Stellar (XLM):stellar
-Любой банк IDR:wire-idr
 Bitcoin Gold (BTG):bitcoin-gold
 TRON (TRX):tron
 Exmo BTC:exmo-btc
-ЕРИП Расчет:erip
-Visa/MasterCard AMD:visa-mastercard-amd
 VeChain (VET):vechain
-Карта UZCARD:uscard
 Tether TRC20 (USDT):tether-trc20
 Счет телефона UAH:mobile-wallet-uah
-Наличные BYN:belarus-cash
-Любой банк NGN:wire-ngn
-UNI RUB:uni-rub
 Skrill GBP:skrill-gbp
-Карта Мир:mir
-Карта AmEx:americanexpress
 УкрСиббанк:ukrsibbank
-USD Coin (USDC):usd-coin
-TrueUSD (TUSD):trueusd
-Visa/MasterCard KGS:visa-mastercard-kgs
 Qtum (QTUM):qtum
 BitTorrent (BTT):bittorrent
 Kuna:kuna
-Любой банк PLN:wire-pln
-Visa/MasterCard CNY:visa-mastercard-cny
-Любой банк BYN:wire-byn
 VelesPay:velespay
-Paxos (PAX):
-Cryptex:paxos
+Paxos (PAX):paxos
+Cryptex:cryptex
 Advanced Cash KZT:advanced-cash-kzt
-Россельхозбанк:rosselhozbank
 PaySera EUR:paysera-euro
 Tether ERC20 (USDT):tether-erc20
 Альфа-Банк UAH:alfabank-uah
-Visa/MasterCard PLN:visa-mastercard-pln
-Любой банк TRY:wire-try
-МТС Банк:mts-bank
-Revolut USD:revolut-usd
-Revolut EUR:revolut-euro
-Visa/MasterCard MDL:visa-mastercard-mdl
-Росбанк:rosbank
 Сбербанк UAH:sberbank-uah
 Chainlink (LINK):chainlink
 Cosmos (ATOM):cosmos
-Карта HUMO:humo
-ecoPayz:ecopayz
 Polkadot (DOT):polkadot
-Uniswap (UNI):polkadot
+Uniswap (UNI):uniswap
 Dai (DAI):dai
 Наличные GBP:pound-cash
 Ravencoin (RVN):ravencoin
 Binance USD (BUSD):busd
-Jysan Bank:jysan-bank
 Tether BEP20 (USDT):tether-bep20
-Сбербанк Код:sberbank-code
 Shiba Inu (SHIB):shiba-inu
 Наличные AED:dirham

@@ -7,6 +7,7 @@ namespace ParserBestChangeAPI
 {
     public static class Settings
     {
+        static public int timeStop = 5;
         static public int Sample { get; set; } = 1000;
     }
 }

@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ParserBestChangeAPI.Model;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace ParserBestChangeAPI.Controllers
 {
@@ -9,27 +11,38 @@ namespace ParserBestChangeAPI.Controllers
     
     public class WeatherForecastController : ControllerBase
     {
-        [Route("data")]
+        [Route("dataMinus")]
         [HttpGet]
-        public async Task<object> Get()
+        public async Task<object> GetMinus()
         {
+                State.stopTimer = 0;
+                using (StreamReader reader = new StreamReader("pathMinus.json"))
+                {
+                    var r = reader.ReadToEnd();
+                    return r;
+                }
+            
+        }
 
-            State.stopTimer = 0;
-            if(!State.result.Any() )
-            {
-                TimerControl.TimerStart();
-                return "start";
-            }
-            else if(State.stopTimer == 3)
-            {
-                
-                TimerControl.TimerContinue();
-                return "start";
-            }
-            else
-            {
-                return State.result;
-            }
+        [Route("dataPlus")]
+        [HttpGet]
+        public async Task<object> GetPlus()
+        {
+                State.stopTimer = 0;
+                using (StreamReader reader = new StreamReader("pathPlus.json"))
+                {
+                    var r = reader.ReadToEnd();
+                    return r;
+                }
+        }
+
+        
+
+        [Route("continue")]
+        [HttpGet]
+        public void Start()
+        {
+            TimerControl.TimerContinue();
         }
 
         [Route("status")]
@@ -38,5 +51,25 @@ namespace ParserBestChangeAPI.Controllers
         {
             return State.flagProcessUpdate;
         }
+
+        [Route("stateServer")]
+        [HttpGet]
+        public async Task<object> GetState()
+        {
+            return JsonConvert.SerializeObject(State.flagStateServer);
+        }
+
+        [Route("datetime")]
+        [HttpGet]
+        public async Task<object> GetDT()
+        {
+            using (StreamReader reader = new StreamReader("pathDT.json"))
+            {
+                var r = reader.ReadToEnd();
+                return r;
+            }
+        }
+
+
     }
 }

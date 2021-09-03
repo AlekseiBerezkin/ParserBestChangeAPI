@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ParserBestChangeAPI.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace ParserBestChangeAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            TimerControl.TimerStart();
         }
 
         public IConfiguration Configuration { get; }

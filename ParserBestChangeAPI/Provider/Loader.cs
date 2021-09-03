@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ParserBestChangeAPI.Provider
 {
-    public static class Loader
+    public  class Loader
     {
 
-        public static bool DownloadInfoZip()
+        public  bool DownloadInfoZip()
         {
             try
             {

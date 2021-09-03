@@ -1,13 +1,16 @@
 ﻿using ParserBestChangeAPI.Provider;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace ParserBestChangeAPI.Model
 {
-    public static class TimerControl
+    public class TimerControl
     {
 
         // устанавливаем метод обратного вызова
@@ -17,99 +20,137 @@ namespace ParserBestChangeAPI.Model
 
         static public void TimerStart()
         {
-            timer = new Timer(tm, 0, 0, 30000);
+            timer = new Timer(tm, 0, 0, 60000);
         }
 
         static public void TimerContinue()
         {
-            timer.Change(0, 30000);
+            timer.Change(0, 60000);
         }
         private static async void updateData(object obj)
         {
+
             try
             {
+                
                 State.flagProcessUpdate = true;
-                State.stopTimer++;
 
-                if(State.stopTimer==3)
-                {
-                    timer.Change(System.Threading.Timeout.Infinite, 0);
-                }
-
-                Loader.DownloadInfoZip();
+                Loader l = new Loader();
+                l.DownloadInfoZip();
                    // return null;
 
                 ZipArchiveProvider zap = new ZipArchiveProvider("info.zip");
-                Dictionary<string, List<double>> z = await zap.GetMassData("bm_rates.dat");
+                await zap.GetMassData("bm_rates.dat");
 
-                var keysDictionary = z.Keys;
+                Dictionary<string, List<double>> plus = zap.dictionaryPlus;
+                Dictionary<string, List<double>> minus = zap.dictionaryMinus;
 
-
-                foreach (string pair in keysDictionary.ToList())
+                foreach (string pair in minus.Keys.ToList())
                 {
-                    if (!(z[pair].Count <= 5))
+                    if (minus[pair].Count >= 5)
                     {
-                        z[pair].Sort((a, b) => a.CompareTo(b));
-                        z[pair] = z[pair].GetRange(z[pair].Count - 5, 5);
+                        minus[pair].Sort((a, b) => a.CompareTo(b));
+                        minus[pair] = minus[pair].GetRange(0, 5);
+                    }
+                }
+
+               
+                List<Rates> ratesMinus = new List<Rates>();
+
+                foreach (var zz in minus)
+                {
+
+                    Rates r = new Rates()
+                    {
+                        Name=zz.Key,
+                        Rate=zz.Value
+                    };
+
+                    if(!(r.Rate.Count < 2))
+                    {
+                        ratesMinus.Add(r);
+                    }
+                    
+                }
+
+
+                foreach (string pair in plus.Keys.ToList())
+                {
+                    if (plus[pair].Count >= 5)
+                    {
+                        plus[pair].Sort((a, b) => a.CompareTo(b));
+                        plus[pair] = plus[pair].GetRange(plus[pair].Count - 5, 5);
                     }
                 }
 
 
+                List<Rates> ratesPlus = new List<Rates>();
 
-                Dictionary<string, List<double>> listCalc = new Dictionary<string, List<double>>();
-
-                foreach (string pair in keysDictionary.ToList())
+                foreach (var zz in plus)
                 {
-                    List<double> calc = new List<double>();
 
-
-                    for (int i = z[pair].Count - 1; i > 0; i--)
+                    Rates r = new Rates()
                     {
+                        Name = zz.Key,
+                        Rate = zz.Value
+                    };
 
-                        calc.Add(((z[pair][z[pair].Count - 1] - z[pair][i - 1]) / z[pair][z[pair].Count - 1]) * 100);
-                    }
-                    listCalc.Add(pair, calc);
-                }
-
-                List<Rates> listRates = new List<Rates>();
-                foreach (string pair in keysDictionary.ToList())
-                {
-                    if (!(listCalc[pair].Count == 0))
+                    if (!(r.Rate.Count < 2))
                     {
-                        listRates.Add(new Rates { Name = pair, Rate = listCalc[pair] });
+                        ratesPlus.Add(r);
                     }
 
                 }
-                z.Clear();
-                listRates.Sort((a, b) => a.Rate[a.Rate.Count - 1].CompareTo(b.Rate[b.Rate.Count - 1]));
-                listRates.AddRange(listRates.GetRange(listRates.Count - 1000, 1000));
-
-                List<Rates> listRatesPlus = new List<Rates>();
-                List<Rates> listRatesMinus = new List<Rates>();
-                listRatesPlus.AddRange(listRates.GetRange(listRates.Count - Settings.Sample, Settings.Sample));
-                listRatesMinus.AddRange(listRates.GetRange(0, Settings.Sample));
-                listRates.Clear();
-                listRates.AddRange(listRatesMinus);
-                listRates.AddRange(listRatesPlus);
 
                 Dictionary<string, string> currency = await zap.GetCurrencys("bm_cy.dat");
 
                 IdexToName itn = new IdexToName(currency);
 
-                for (int i = 0; i < listRates.Count; i++)
+                for (int i = 0; i < ratesMinus.Count; i++)
                 {
-                    listRates[i].Name = itn.convertIdToName(listRates[i].Name);
+                    ratesMinus[i].Name = itn.convertIdToName(ratesMinus[i].Name);
+                }
+                for (int i = 0; i < ratesPlus.Count; i++)
+                {
+                    ratesPlus[i].Name = itn.convertIdToName(ratesPlus[i].Name);
                 }
 
                 CreateLink cl = new CreateLink("currency-link.txt");
 
-                for (int i = 0; i < listRates.Count; i++)
+                for (int i = 0; i < ratesMinus.Count; i++)
                 {
-                    listRates[i].url = cl.getLink(listRates[i].Name);
+                    ratesMinus[i].url = cl.getLink(ratesMinus[i].Name);
                 }
 
-                State.result=listRates;
+                for (int i = 0; i < ratesPlus.Count; i++)
+                {
+                    ratesPlus[i].url = cl.getLink(ratesPlus[i].Name);
+                }
+
+                string datetime = await zap.GetDataTimeUpdate("bm_info.dat");
+
+                string jsonMinus = JsonConvert.SerializeObject(ratesMinus.ToArray());
+                File.WriteAllText(@"pathMinus.json", jsonMinus);
+
+                string jsonPlus = JsonConvert.SerializeObject(ratesPlus.ToArray());
+                File.WriteAllText(@"pathPlus.json", jsonPlus);
+
+                string DT = JsonConvert.SerializeObject(datetime);
+                File.WriteAllText(@"pathDT.json", DT);
+
                 State.flagProcessUpdate = false;
+                State.stopTimer++;
+
+                if (State.stopTimer == Settings.timeStop)
+                {
+                    timer.Change(Timeout.Infinite, 0);
+                    State.flagStateServer = false;
+                }
+                else
+                {
+                    State.flagStateServer = true;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -118,6 +159,5 @@ namespace ParserBestChangeAPI.Model
 
             }
         }
-
     }
 }
