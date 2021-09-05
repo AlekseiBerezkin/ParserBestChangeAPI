@@ -15,7 +15,8 @@ namespace ParserBestChangeAPI.Controllers
         [HttpGet]
         public async Task<object> GetMinus()
         {
-                State.stopTimer = 0;
+            Program.Logger.Info("Запрос отрицательных данных");
+            State.stopTimer = 0;
                 using (StreamReader reader = new StreamReader("pathMinus.json"))
                 {
                     var r = reader.ReadToEnd();
@@ -28,7 +29,8 @@ namespace ParserBestChangeAPI.Controllers
         [HttpGet]
         public async Task<object> GetPlus()
         {
-                State.stopTimer = 0;
+            Program.Logger.Info("Запрос положительных данных");
+            State.stopTimer = 0;
                 using (StreamReader reader = new StreamReader("pathPlus.json"))
                 {
                     var r = reader.ReadToEnd();
@@ -42,6 +44,7 @@ namespace ParserBestChangeAPI.Controllers
         [HttpGet]
         public void Start()
         {
+            Program.Logger.Info("Продолжить преобразования");
             TimerControl.TimerContinue();
         }
 
@@ -49,6 +52,7 @@ namespace ParserBestChangeAPI.Controllers
         [HttpGet]
         public async Task<object> GetStatus()
         {
+            Program.Logger.Info("Запрос статуса");
             return State.flagProcessUpdate;
         }
 
@@ -56,6 +60,7 @@ namespace ParserBestChangeAPI.Controllers
         [HttpGet]
         public async Task<object> GetState()
         {
+            
             return JsonConvert.SerializeObject(State.flagStateServer);
         }
 

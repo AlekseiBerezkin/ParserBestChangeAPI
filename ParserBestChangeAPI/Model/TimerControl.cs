@@ -25,6 +25,7 @@ namespace ParserBestChangeAPI.Model
 
         static public void TimerContinue()
         {
+            Program.Logger.Info("Возобновление работы");
             timer.Change(0, 60000);
         }
         private static async void updateData(object obj)
@@ -32,19 +33,19 @@ namespace ParserBestChangeAPI.Model
 
             try
             {
-                
+                Program.Logger.Info("Обновление даннных");
                 State.flagProcessUpdate = true;
 
                 Loader l = new Loader();
                 l.DownloadInfoZip();
-                   // return null;
-
+                // return null;
+                Program.Logger.Info("Загрузка файла");
                 ZipArchiveProvider zap = new ZipArchiveProvider("info.zip");
                 await zap.GetMassData("bm_rates.dat");
 
                 Dictionary<string, List<double>> plus = zap.dictionaryPlus;
                 Dictionary<string, List<double>> minus = zap.dictionaryMinus;
-
+                Program.Logger.Info("Преобразования");
                 foreach (string pair in minus.Keys.ToList())
                 {
                     if (minus[pair].Count >= 5)
@@ -101,7 +102,7 @@ namespace ParserBestChangeAPI.Model
                     }
 
                 }
-
+                Program.Logger.Info("Замена id на имена");
                 Dictionary<string, string> currency = await zap.GetCurrencys("bm_cy.dat");
 
                 IdexToName itn = new IdexToName(currency);
@@ -126,9 +127,9 @@ namespace ParserBestChangeAPI.Model
                 {
                     ratesPlus[i].url = cl.getLink(ratesPlus[i].Name);
                 }
-
+                Program.Logger.Info("Получение времени");
                 string datetime = await zap.GetDataTimeUpdate("bm_info.dat");
-
+                Program.Logger.Info("Запись данных в файл");
                 string jsonMinus = JsonConvert.SerializeObject(ratesMinus.ToArray());
                 File.WriteAllText(@"pathMinus.json", jsonMinus);
 
@@ -137,12 +138,13 @@ namespace ParserBestChangeAPI.Model
 
                 string DT = JsonConvert.SerializeObject(datetime);
                 File.WriteAllText(@"pathDT.json", DT);
-
+                Program.Logger.Info("Запись данных в файл окончена");
                 State.flagProcessUpdate = false;
                 State.stopTimer++;
 
                 if (State.stopTimer == Settings.timeStop)
                 {
+                    Program.Logger.Info("Остановка сервиса");
                     timer.Change(Timeout.Infinite, 0);
                     State.flagStateServer = false;
                 }
@@ -154,6 +156,7 @@ namespace ParserBestChangeAPI.Model
             }
             catch (Exception ex)
             {
+                Program.Logger.Info("Исключение при преобразовании"+ex);
                 State.flagProcessUpdate = false;
                 // return ex.ToString();
 

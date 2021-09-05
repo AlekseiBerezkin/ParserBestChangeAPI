@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +19,17 @@ namespace ParserBestChangeAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            TimerControl.TimerStart();
+            Program.Logger.Info("Старт приложения");
+            try
+            {
+                TimerControl.TimerStart();
+            }
+            catch(Exception ex)
+            {
+                Program.Logger.Info("Исключение при старте таймера "+ex);
+            }
+            
+            
         }
 
         public IConfiguration Configuration { get; }
