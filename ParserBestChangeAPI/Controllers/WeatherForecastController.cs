@@ -25,6 +25,19 @@ namespace ParserBestChangeAPI.Controllers
             
         }
 
+        [Route("basecur")]
+        [HttpGet]
+        public async Task<object> GetBaseCur()
+        {
+            Program.Logger.Info("Запрос курсов");
+            using (StreamReader reader = new StreamReader("basecur.json"))
+            {
+                var r = reader.ReadToEnd();
+                return r;
+            }
+
+        }
+
         [Route("dataPlus")]
         [HttpGet]
         public async Task<object> GetPlus()

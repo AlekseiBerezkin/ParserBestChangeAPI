@@ -33,6 +33,11 @@ namespace ParserBestChangeAPI.Model
 
             try
             {
+                BinanceProvider bp = new BinanceProvider();
+
+                List<BPair> BinanceData= bp.GetBaseCur();
+                Dictionary<string, string> basecur= bp.dicBaseCur();
+                
                 Program.Logger.Info("Обновление даннных");
                 State.flagProcessUpdate = true;
 
@@ -127,9 +132,46 @@ namespace ParserBestChangeAPI.Model
                 {
                     ratesPlus[i].url = cl.getLink(ratesPlus[i].Name);
                 }
+
+                foreach(BPair bpair in BinanceData)
+                {
+                    for(int i=0;i<ratesMinus.Count;i++)
+                    {
+                        string[] splitdata = ratesMinus[i].Name.Split(":");
+                        if (splitdata[1].Contains(bpair.symbol.Replace("USDT", "")))
+                        {
+                            ratesMinus[i].askPrice = bpair.askPrice;
+                            
+                        }
+                    }   
+                }
+
+                foreach (BPair bpair in BinanceData)
+                {
+                    for (int i = 0; i < ratesPlus.Count; i++)
+                    {
+                        string[] splitdata = ratesPlus[i].Name.Split(":");
+                        if (splitdata[0].Contains(bpair.symbol.Replace("USDT", "")))
+                        {
+                            ratesPlus[i].askPrice = bpair.askPrice;
+                            
+                        }
+                    }
+                }
+
+
+
+
+
+
+
                 Program.Logger.Info("Получение времени");
                 string datetime = await zap.GetDataTimeUpdate("bm_info.dat");
                 Program.Logger.Info("Запись данных в файл");
+
+                string jsonbasecur = JsonConvert.SerializeObject(basecur.ToArray());
+                File.WriteAllText(@"basecur.json", jsonbasecur);
+
                 string jsonMinus = JsonConvert.SerializeObject(ratesMinus.ToArray());
                 File.WriteAllText(@"pathMinus.json", jsonMinus);
 
@@ -152,7 +194,7 @@ namespace ParserBestChangeAPI.Model
                 {
                     State.flagStateServer = true;
                 }
-                
+
             }
             catch (Exception ex)
             {
