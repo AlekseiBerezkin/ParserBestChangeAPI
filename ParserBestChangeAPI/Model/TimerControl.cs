@@ -209,7 +209,7 @@ namespace ParserBestChangeAPI.Model
                 State.flagProcessUpdate = false;
                 State.stopTimer++;
 
-                if (State.stopTimer == Settings.timeStop)
+                /*if (State.stopTimer == Settings.timeStop)
                 {
                     Program.Logger.Info("Остановка сервиса");
                     timer.Change(Timeout.Infinite, 0);
@@ -217,8 +217,9 @@ namespace ParserBestChangeAPI.Model
                 }
                 else
                 {
-                    State.flagStateServer = true;
-                }
+                    
+                }*/
+                State.flagStateServer = true;
 
             }
             catch (Exception ex)
