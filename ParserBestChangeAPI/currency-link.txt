@@ -58,7 +58,6 @@ Exmo EUR:exmo-euro
 Waves (WAVES):waves
 Komodo (KMD):komodo
 Ontology (ONT):ontology
-Bitcoin SV (BSV):bitcoin-sv
 Peercoin (PPC):peercoin
 Ethereum (ETH):ethereum
 Dash (DASH):dash

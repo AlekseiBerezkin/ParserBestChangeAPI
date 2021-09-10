@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NLog.Web;
+using System.IO;
 
 namespace ParserBestChangeAPI
 {
@@ -19,17 +20,21 @@ namespace ParserBestChangeAPI
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>()
-                    .ConfigureLogging(logging =>
-                    {
-                        logging.ClearProviders();
-                        logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                    })
+               Host.CreateDefaultBuilder(args)
+                   .ConfigureWebHostDefaults(webBuilder =>
+                   {
+                       webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
+                       webBuilder.UseIISIntegration();
+                       webBuilder.UseStartup<Startup>()
+                                           .ConfigureLogging(logging =>
+                                           {
+                                               logging.ClearProviders();
+                                               logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                                           })
                 .UseNLog();  // Подключаем NLog
-                
-                });
+                   });
+
+
+       
     }
 }
