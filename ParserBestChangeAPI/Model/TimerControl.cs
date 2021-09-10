@@ -135,18 +135,49 @@ namespace ParserBestChangeAPI.Model
 
                 foreach(BPair bpair in BinanceData)
                 {
+                    string partBinance = bpair.symbol.Replace("USDT", "");
+
                     for(int i=0;i<ratesMinus.Count;i++)
                     {
                         string[] splitdata = ratesMinus[i].Name.Split(":");
-                        if (splitdata[1].Contains(bpair.symbol.Replace("USDT", "")))
+                        if (splitdata[1].Contains("RUB") || splitdata[1].Contains("EUR") || splitdata[1].Contains("UAH"))
+                        {
+                            if (splitdata[0].Contains(partBinance))
+                            {
+                                ratesMinus[i].askPrice = bpair.askPrice;
+                            }
+                        }
+                        else if (splitdata[1].Contains(partBinance))
                         {
                             ratesMinus[i].askPrice = bpair.askPrice;
-                            
                         }
+                        
                     }   
                 }
 
+
                 foreach (BPair bpair in BinanceData)
+                {
+                    string partBinance = bpair.symbol.Replace("USDT", "");
+                   
+                    for (int i = 0; i < ratesPlus.Count; i++)
+                    {
+                        string[] splitdata = ratesPlus[i].Name.Split(":");
+                        if (splitdata[0].Contains("RUB") || splitdata[1].Contains("EUR") || splitdata[1].Contains("UAH"))
+                        {
+                            if (splitdata[1].Contains(partBinance))
+                            {
+                                ratesPlus[i].askPrice = bpair.askPrice;
+                            }
+                        }
+                        else if (splitdata[0].Contains(partBinance))
+                        {
+                            ratesPlus[i].askPrice = bpair.askPrice;
+                        }
+
+                    }
+                }
+                /*foreach (BPair bpair in BinanceData)
                 {
                     for (int i = 0; i < ratesPlus.Count; i++)
                     {
@@ -157,13 +188,7 @@ namespace ParserBestChangeAPI.Model
                             
                         }
                     }
-                }
-
-
-
-
-
-
+                }*/
 
                 Program.Logger.Info("Получение времени");
                 string datetime = await zap.GetDataTimeUpdate("bm_info.dat");
