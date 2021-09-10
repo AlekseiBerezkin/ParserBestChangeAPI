@@ -28,12 +28,12 @@ namespace ParserBestChangeAPI.Provider
             Dictionary<string, string> dicBase=new Dictionary<string, string>();
             foreach (BPair bp in BpUsdt) 
             {
-                if( bp.symbol=="EURUSDT" || bp.symbol == "USDTUAH")
+                if( bp.symbol=="EURUSDT" || bp.symbol == "USDTUAH" || bp.symbol == "USDTRUB")
                 {
                     dicBase.Add(bp.symbol.Replace("USDT",""),bp.askPrice);
                 }
             }
-            dicBase.Add(busdrub.symbol.Replace("BUSD", ""), busdrub.askPrice);
+            //dicBase.Add(busdrub.symbol.Replace("BUSD", ""), busdrub.askPrice);
             return dicBase;
         }
 
@@ -45,10 +45,10 @@ namespace ParserBestChangeAPI.Provider
                 {
                     BpUsdt.Add(bp);
                 }
-                if(bp.symbol== "BUSDRUB")
+                /*if(bp.symbol== "USDTRUB")
                 {
                     busdrub=bp;
-                }
+                }*/
             }
             return BpUsdt;
         }
