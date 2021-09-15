@@ -38,8 +38,9 @@ namespace ParserBestChangeAPI.Model
             {
                 return nameLink[name];
             }
-            catch
+            catch(Exception ex)
             {
+                Program.Logger.Info("Исключение при генерации ссылки " + ex);
                 return "noCurrency";
             }
             

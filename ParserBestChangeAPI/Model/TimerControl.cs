@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Text.Json;
 using Newtonsoft.Json;
 
 namespace ParserBestChangeAPI.Model
@@ -60,7 +58,6 @@ namespace ParserBestChangeAPI.Model
                     }
                 }
 
-               
                 List<Rates> ratesMinus = new List<Rates>();
 
                 foreach (var zz in minus)
@@ -79,7 +76,6 @@ namespace ParserBestChangeAPI.Model
                     
                 }
 
-
                 foreach (string pair in plus.Keys.ToList())
                 {
                     if (plus[pair].Count >= 5)
@@ -88,7 +84,6 @@ namespace ParserBestChangeAPI.Model
                         plus[pair] = plus[pair].GetRange(plus[pair].Count - 5, 5);
                     }
                 }
-
 
                 List<Rates> ratesPlus = new List<Rates>();
 
@@ -177,18 +172,6 @@ namespace ParserBestChangeAPI.Model
 
                     }
                 }
-                /*foreach (BPair bpair in BinanceData)
-                {
-                    for (int i = 0; i < ratesPlus.Count; i++)
-                    {
-                        string[] splitdata = ratesPlus[i].Name.Split(":");
-                        if (splitdata[0].Contains(bpair.symbol.Replace("USDT", "")))
-                        {
-                            ratesPlus[i].askPrice = bpair.askPrice;
-                            
-                        }
-                    }
-                }*/
 
                 Program.Logger.Info("Получение времени");
                 string datetime = await zap.GetDataTimeUpdate("bm_info.dat");
@@ -206,21 +189,6 @@ namespace ParserBestChangeAPI.Model
                 string DT = JsonConvert.SerializeObject(datetime);
                 File.WriteAllText(@"pathDT.json", DT);
                 Program.Logger.Info("Запись данных в файл окончена");
-                State.flagProcessUpdate = false;
-                State.stopTimer++;
-
-                /*if (State.stopTimer == Settings.timeStop)
-                {
-                    Program.Logger.Info("Остановка сервиса");
-                    timer.Change(Timeout.Infinite, 0);
-                    State.flagStateServer = false;
-                }
-                else
-                {
-                    
-                }*/
-                State.flagStateServer = true;
-
             }
             catch (Exception ex)
             {

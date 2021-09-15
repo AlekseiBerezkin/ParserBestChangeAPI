@@ -158,3 +158,8 @@
 2021-09-08 13:54:30.4487 Info Adding target FileTarget(Name=allfile)
 2021-09-08 13:54:30.4487 Info Adding target FileTarget(Name=ownFile-web)
 2021-09-08 13:54:30.4997 Info Validating config: TargetNames=allfile, ownFile-web, ConfigItems=45, FilePath=C:\Users\user\source\repos\ParserBestChangeAPI\ParserBestChangeAPI\bin\Debug\netcoreapp3.1\nlog.config
+2021-09-15 17:20:30.7488 Info Message Template Auto Format enabled
+2021-09-15 17:20:30.7965 Info Loading assembly: NLog.Web.AspNetCore
+2021-09-15 17:20:30.8941 Info Adding target FileTarget(Name=allfile)
+2021-09-15 17:20:30.8941 Info Adding target FileTarget(Name=ownFile-web)
+2021-09-15 17:20:30.9582 Info Validating config: TargetNames=allfile, ownFile-web, ConfigItems=45, FilePath=C:\Users\user\source\repos\ParserBestChangeAPI\ParserBestChangeAPI\bin\Debug\netcoreapp3.1\nlog.config
