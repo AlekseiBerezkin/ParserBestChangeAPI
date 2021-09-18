@@ -136,7 +136,11 @@ namespace ParserBestChangeAPI.Model
                     {
                         string[] splitdata = ratesMinus[i].Name.Split(":");
                         if (splitdata[1].Contains("RUB") || splitdata[1].Contains("EUR") || splitdata[1].Contains("UAH")
-                            || splitdata[1].Contains("USD") || splitdata[1].Contains("USDT") || splitdata[1].Contains("ЮMoney"))
+                            || splitdata[1].Contains("USD") || splitdata[1].Contains("USDT") || splitdata[1].Contains("ЮMoney")
+                            || splitdata[1].Contains("WMR")
+                            || splitdata[1].Contains("WMZ")
+                            || splitdata[1].Contains("WME")
+                            || splitdata[1].Contains("WMU"))
                         {
                             if (splitdata[0].Contains(partBinance))
                             {
@@ -160,7 +164,11 @@ namespace ParserBestChangeAPI.Model
                     {
                         string[] splitdata = ratesPlus[i].Name.Split(":");
                         if (splitdata[1].Contains("RUB") || splitdata[1].Contains("EUR") || splitdata[1].Contains("UAH")
-                            || splitdata[1].Contains("USD") || splitdata[1].Contains("USDT") || splitdata[1].Contains("ЮMoney"))
+                            || splitdata[1].Contains("USD") || splitdata[1].Contains("USDT") || splitdata[1].Contains("ЮMoney")
+                            || splitdata[1].Contains("WMR")
+                            || splitdata[1].Contains("WMZ")
+                            || splitdata[1].Contains("WME")
+                            || splitdata[1].Contains("WMU"))
                         {
                             if (splitdata[1].Contains(partBinance))
                             {
