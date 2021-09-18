@@ -5,12 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Newtonsoft.Json;
+using UndergroundIRO.BestChangeParserKit;
 
 namespace ParserBestChangeAPI.Model
 {
     public class TimerControl
     {
-
+        BestChangeParser d = new BestChangeParser();
+        
         // устанавливаем метод обратного вызова
         static TimerCallback tm = new TimerCallback(updateData);
         // создаем таймер
@@ -48,7 +50,8 @@ namespace ParserBestChangeAPI.Model
 
                 Dictionary<string, List<double>> plus = zap.dictionaryPlus;
                 Dictionary<string, List<double>> minus = zap.dictionaryMinus;
-                Program.Logger.Info("Преобразования");
+
+
                 foreach (string pair in minus.Keys.ToList())
                 {
                     if (minus[pair].Count >= 5)
@@ -58,6 +61,112 @@ namespace ParserBestChangeAPI.Model
                     }
                 }
 
+                foreach (string pair in plus.Keys.ToList())
+                {
+                    if (plus[pair].Count >= 5)
+                    {
+                        plus[pair].Sort((a, b) => a.CompareTo(b));
+                        plus[pair] = plus[pair].GetRange(0, 5);
+                    }
+                }
+
+                List<Rates> XRP = new List<Rates>();
+                List<Rates> ZEC = new List<Rates>();
+
+                foreach (string pair in minus.Keys.ToList())
+                {
+                    string []splitdata = pair.Split("-");
+                    if(splitdata[0]=="161")
+                    {
+                        Rates r =
+                        new Rates
+                        {
+                            Name=pair,
+                            Rate=minus[pair]
+                        };
+                        XRP.Add(r);
+                    }
+                }
+
+                foreach (string pair in minus.Keys.ToList())
+                {
+                    string[] splitdata = pair.Split("-");
+                    if (splitdata[1] == "162")
+                    {
+                        Rates r =
+new Rates
+{
+    Name = pair,
+    Rate = minus[pair]
+};
+                        ZEC.Add(r);
+                    }
+                }
+
+                foreach (string pair in plus.Keys.ToList())
+                {
+                    string[] splitdata = pair.Split("-");
+                    if (splitdata[0] == "161")
+                    {
+                        Rates r =new Rates
+{
+    Name = pair,
+    Rate = plus[pair]
+};
+                        XRP.Add(r);
+                    }
+                }
+
+                foreach (string pair in plus.Keys.ToList())
+                {
+                    string[] splitdata = pair.Split("-");
+                    if (splitdata[1] == "162")
+                    {
+                        Rates r =
+new Rates
+{
+    Name = pair,
+    Rate = plus[pair]
+};
+                        ZEC.Add(r);
+                    }
+                }
+
+                List<RatesDouble> general = new List<RatesDouble>();
+
+                foreach(Rates rate in XRP)
+                {
+                    string[] splitdata = rate.Name.Split("-");
+
+                    foreach(Rates ratezec in ZEC)
+                    {
+                        string[] splitdatazec = ratezec.Name.Split("-");
+                        if(splitdatazec[0]== splitdata[1])
+                        {
+                            RatesDouble td = new RatesDouble
+                            {
+                                Name = splitdata[0] + "-" + splitdata[1] + "-" + splitdatazec[1],
+                                currencyLeft=rate.Rate.Min()
+                            };
+                            general.Add(td);
+                        }
+                    }
+                }
+
+                general.Sort((a,b)=> a.currencyLeft.CompareTo(b.currencyLeft));
+
+                //plus[pair].Sort((a, b) => a.CompareTo(b));
+
+                /*Program.Logger.Info("Преобразования");
+                foreach (string pair in minus.Keys.ToList())
+                {
+                    if (minus[pair].Count >= 5)
+                    {
+                        minus[pair].Sort((a, b) => a.CompareTo(b));
+                        minus[pair] = minus[pair].GetRange(0, 5);
+                    }
+                }
+                
                 List<Rates> ratesMinus = new List<Rates>();
 
                 foreach (var zz in minus)
@@ -101,8 +210,10 @@ namespace ParserBestChangeAPI.Model
                         ratesPlus.Add(r);
                     }
 
-                }
-                Program.Logger.Info("Замена id на имена");
+                }*/
+
+
+                /*Program.Logger.Info("Замена id на имена");
                 Dictionary<string, string> currency = await zap.GetCurrencys("bm_cy.dat");
 
                 IdexToName itn = new IdexToName(currency);
@@ -146,7 +257,7 @@ namespace ParserBestChangeAPI.Model
                         {
                             ratesMinus[i].askPrice = bpair.askPrice;
                         }
-                        
+
                     }   
                 }
 
@@ -154,7 +265,7 @@ namespace ParserBestChangeAPI.Model
                 foreach (BPair bpair in BinanceData)
                 {
                     string partBinance = bpair.symbol.Replace("USDT", "");
-                   
+
                     for (int i = 0; i < ratesPlus.Count; i++)
                     {
                         string[] splitdata = ratesPlus[i].Name.Split(":");
@@ -188,7 +299,7 @@ namespace ParserBestChangeAPI.Model
 
                 string DT = JsonConvert.SerializeObject(datetime);
                 File.WriteAllText(@"pathDT.json", DT);
-                Program.Logger.Info("Запись данных в файл окончена");
+                Program.Logger.Info("Запись данных в файл окончена");*/
             }
             catch (Exception ex)
             {
