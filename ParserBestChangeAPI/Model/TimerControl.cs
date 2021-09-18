@@ -135,7 +135,8 @@ namespace ParserBestChangeAPI.Model
                     for(int i=0;i<ratesMinus.Count;i++)
                     {
                         string[] splitdata = ratesMinus[i].Name.Split(":");
-                        if (splitdata[1].Contains("RUB") || splitdata[1].Contains("EUR") || splitdata[1].Contains("UAH"))
+                        if (splitdata[1].Contains("RUB") || splitdata[1].Contains("EUR") || splitdata[1].Contains("UAH")
+                            || splitdata[1].Contains("USD") || splitdata[1].Contains("USDT") || splitdata[1].Contains("ЮMoney"))
                         {
                             if (splitdata[0].Contains(partBinance))
                             {
@@ -158,7 +159,8 @@ namespace ParserBestChangeAPI.Model
                     for (int i = 0; i < ratesPlus.Count; i++)
                     {
                         string[] splitdata = ratesPlus[i].Name.Split(":");
-                        if (splitdata[0].Contains("RUB") || splitdata[1].Contains("EUR") || splitdata[1].Contains("UAH"))
+                        if (splitdata[1].Contains("RUB") || splitdata[1].Contains("EUR") || splitdata[1].Contains("UAH")
+                            || splitdata[1].Contains("USD") || splitdata[1].Contains("USDT") || splitdata[1].Contains("ЮMoney"))
                         {
                             if (splitdata[1].Contains(partBinance))
                             {
