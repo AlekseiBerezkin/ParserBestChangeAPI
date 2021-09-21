@@ -10,6 +10,7 @@ namespace ParserBestChangeAPI.Model
         public string Name { get; set;}
         public List<double> Rate { get; set; }
         public string url { get; set; } = "";
+        public double back { get; set; }
         public string askPrice { get; set; } = "0";
     }
 }

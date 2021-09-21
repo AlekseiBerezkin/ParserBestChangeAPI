@@ -26,6 +26,7 @@ namespace ParserBestChangeAPI.Model
             Program.Logger.Info("Возобновление работы");
             timer.Change(0, 60000);
         }
+
         private static async void updateData(object obj)
         {
 
@@ -36,19 +37,19 @@ namespace ParserBestChangeAPI.Model
                 List<BPair> BinanceData= bp.GetBaseCur();
                 Dictionary<string, string> basecur= bp.dicBaseCur();
                 
-                Program.Logger.Info("Обновление даннных");
+                
                 State.flagProcessUpdate = true;
 
                 Loader l = new Loader();
                 l.DownloadInfoZip();
                 // return null;
-                Program.Logger.Info("Загрузка файла");
+               
                 ZipArchiveProvider zap = new ZipArchiveProvider("info.zip");
                 await zap.GetMassData("bm_rates.dat");
 
                 Dictionary<string, List<double>> plus = zap.dictionaryPlus;
                 Dictionary<string, List<double>> minus = zap.dictionaryMinus;
-                Program.Logger.Info("Преобразования");
+               
                 foreach (string pair in minus.Keys.ToList())
                 {
                     if (minus[pair].Count >= 5)
@@ -56,24 +57,6 @@ namespace ParserBestChangeAPI.Model
                         minus[pair].Sort((a, b) => a.CompareTo(b));
                         minus[pair] = minus[pair].GetRange(0, 5);
                     }
-                }
-
-                List<Rates> ratesMinus = new List<Rates>();
-
-                foreach (var zz in minus)
-                {
-
-                    Rates r = new Rates()
-                    {
-                        Name=zz.Key,
-                        Rate=zz.Value
-                    };
-
-                    if(!(r.Rate.Count < 2))
-                    {
-                        ratesMinus.Add(r);
-                    }
-                    
                 }
 
                 foreach (string pair in plus.Keys.ToList())
@@ -85,6 +68,48 @@ namespace ParserBestChangeAPI.Model
                     }
                 }
 
+                List<Rates> ratesMinus = new List<Rates>();
+
+                foreach (var zz in minus)
+                {
+                    Rates r = new Rates()
+                    {
+                        Name=zz.Key,
+                        Rate=zz.Value
+                    };
+                    string[] splitDataName = r.Name.Split("-");
+                    string revName = splitDataName[1] + "-" + splitDataName[0];
+                    List<double> revList = new List<double>() ;
+                    try
+                    {
+                        revList = plus[revName];
+                        r.back = revList.Max();
+                    }
+                    catch(Exception ex)
+                    {
+                        try
+                        {
+                            revList = minus[revName];
+                            r.back = revList.Min();
+                        }
+                        catch(Exception exc)
+                        {
+                            r.back = 0;
+                        }
+                    }
+
+                    
+                    
+
+                    if (!(r.Rate.Count < 2))
+                    {
+                        ratesMinus.Add(r);
+                    }
+                    
+                }
+
+
+
                 List<Rates> ratesPlus = new List<Rates>();
 
                 foreach (var zz in plus)
@@ -95,14 +120,33 @@ namespace ParserBestChangeAPI.Model
                         Name = zz.Key,
                         Rate = zz.Value
                     };
-
+                    string[] splitDataName = r.Name.Split("-");
+                    string revName = splitDataName[1] + "-" + splitDataName[0];
+                    List<double> revList = new List<double>();
+                    try
+                    {
+                        revList = minus[revName];
+                        r.back = revList.Min();
+                    }
+                    catch (Exception ex)
+                    {
+                        try
+                        {
+                            revList = plus[revName];
+                            r.back = revList.Max();
+                        }
+                        catch (Exception exc)
+                        {
+                            r.back = 0;
+                        }
+                    }
                     if (!(r.Rate.Count < 2))
                     {
                         ratesPlus.Add(r);
                     }
 
                 }
-                Program.Logger.Info("Замена id на имена");
+                
                 Dictionary<string, string> currency = await zap.GetCurrencys("bm_cy.dat");
 
                 IdexToName itn = new IdexToName(currency);
@@ -183,9 +227,9 @@ namespace ParserBestChangeAPI.Model
                     }
                 }
 
-                Program.Logger.Info("Получение времени");
+                
                 string datetime = await zap.GetDataTimeUpdate("bm_info.dat");
-                Program.Logger.Info("Запись данных в файл");
+               
 
                 string jsonbasecur = JsonConvert.SerializeObject(basecur.ToArray());
                 File.WriteAllText(@"basecur.json", jsonbasecur);
@@ -198,7 +242,7 @@ namespace ParserBestChangeAPI.Model
 
                 string DT = JsonConvert.SerializeObject(datetime);
                 File.WriteAllText(@"pathDT.json", DT);
-                Program.Logger.Info("Запись данных в файл окончена");
+               
             }
             catch (Exception ex)
             {
